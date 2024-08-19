@@ -40,4 +40,23 @@ func main() {
 
 	mysqlEngine := InitMysql()
 
+	engine := gin.Default()
+	engine.GET("/get/:id", func(c *gin.Context) {
+        id := c.Param("id")
+        var text Text
+        tx := mysqlEngine.Table("tbl_text").Where("id = ?", id).Find(&text)
+        if tx.Error != nil {
+            log.Println("get error:", tx.Error.Error())
+            c.JSON(http.StatusBadRequest, gin.H{
+                "msg": "get text error",
+            })
+        }
+        c.JSON(http.StatusOK, gin.H{
+            "msg":  "OK",
+            "data": text,
+        })
+    })
+
+    engine.Run(":9999")
+
 }

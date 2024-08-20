@@ -41,6 +41,25 @@ func main() {
 	mysqlEngine := InitMysql()
 
 	engine := gin.Default()
+	engine.POST("update", func(c *gin.Context) {
+        var text Text
+        err := c.BindJSON(&text)
+        if err != nil {
+            log.Println("参数异常")
+            c.JSON(http.StatusBadRequest, gin.H{
+                "msg": "参数异常",
+            })
+        }
+        tx := mysqlEngine.Table("tbl_text").Create(&text)
+        if tx.Error != nil {
+            log.Println("create error", tx.Error.Error())
+        }
+        c.JSON(http.StatusOK, gin.H{
+            "msg": "OK",
+            "id":  text.ID,
+        })
+    })
+
 	engine.GET("/get/:id", func(c *gin.Context) {
         id := c.Param("id")
         var text Text
@@ -58,5 +77,4 @@ func main() {
     })
 
     engine.Run(":9999")
-
 }

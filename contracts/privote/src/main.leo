@@ -39,9 +39,9 @@ program privote.aleo {
     mapping counts: u64 => field;
 
     // voting private will be private, store them into record.
-    record private {
+    record Private {
         owner: address,
-        private: u64,             // voting private, default is 1u64
+        Private: u64,             // voting private, default is 1u64
         withdrawable_block_height: u32, // withdrawable block height
     }
 
@@ -52,6 +52,14 @@ program privote.aleo {
             name: 7006912922137281764648909451784002770527598field,   // stands for private Voting Token string
             symbol: 5264980field,   // stands for PVT string
             amount: amount,
+        };
+    }
+
+    transition mint_private() -> Private {
+        return Private {
+            owner: self.caller,
+            Private: 1u64,
+            withdrawable_block_height: 0u32,    // default can be withdrawed at any time.
         };
     }
 }

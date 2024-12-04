@@ -3,12 +3,12 @@ import credits.leo;
 // The `program` scope defines the data types, functions, and state associated with the `privote` program.
 program privote.aleo {
 
-    // private voting token
+    // privote voting token
     record PVToken {
         owner: address,
-        name: field,        // token name, private voting token
+        name: field,        // token name, privote voting token
         symbol: field,      // token symbol, PVT
-        amount: u64,        // voting private, default is 1u64
+        amount: u64,        // voting privote, default is 1u64
     }
 
     // current proposals id, like auto-increament id in mysql  // 2074281269322187893875field => current proposal id
@@ -38,20 +38,28 @@ program privote.aleo {
     // https://vm.aleo.org/api/testnet3/program/${programID}/mapping/counts/x => xU64
     mapping counts: u64 => field;
 
-    // voting private will be private, store them into record.
-    record private {
+    // voting privote will be privote, store them into record.
+    record privote {
         owner: address,
-        private: u64,             // voting private, default is 1u64
+        privote: u64,             // voting privote, default is 1u64
         withdrawable_block_height: u32, // withdrawable block height
     }
 
-    // get private voting token
+    // get privote voting token
     transition mint_token(amount: u64) -> PVToken {
         return PVToken {
             owner: self.caller,
-            name: 7006912922137281764648909451784002770527598field,   // stands for private Voting Token string
+            name: 7006912922137281764648909451784002770527598field,   // stands for privote Voting Token string
             symbol: 5264980field,   // stands for PVT string
             amount: amount,
+        };
+    }
+
+    transition mint_privote() -> privote {
+        return privote {
+            owner: self.caller,
+            privote: 1u64,
+            withdrawable_block_height: 0u32,    // default can be withdrawed at any time.
         };
     }
 }
